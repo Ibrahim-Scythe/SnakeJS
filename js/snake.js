@@ -70,9 +70,17 @@ class Pellet {
         this.posX = tileSize*randomNumber(0, tileCount - 1);
         this.posY = tileSize*randomNumber(0, tileCount - 1);
     }
+
+    getX() {
+        return this.posX;
+    }
+
+    getY() {
+        return this.posY;
+    }
 }
 
-let vX = 0;
+let vX = 1;
 let vY = 0;
 
 const snake = new SnakeHead(boardSize/2, boardSize/2)
@@ -99,6 +107,11 @@ const gameLoop = () => {
     }
 
     // Draw pellet
+    if (snake.getX() === pellet.getX() && snake.getY() === pellet.getY()) {
+        pellet.move();
+        snake.addPart();
+    }
+
     ctx.fillStyle = "red";
     ctx.fillRect(pellet.posX, pellet.posY, tileSize, tileSize);
 };
@@ -122,11 +135,26 @@ document.addEventListener('keydown', function(event) {
             vX = 1;
             vY = 0;
             break;
-        case 'p':
-            vX = 0;
-            vY = 0;
-            break;
     }
 });
 
-setInterval(gameLoop, 100);
+// Pressing the button or the key p will start/stop the race
+const button = document.getElementById("startBtn");
+let intervalID = null;
+
+const startAndStop = () => {
+    if (intervalID == null) {
+        intervalID = setInterval(gameLoop, 100);
+        button.textContent = "Stop";
+    }
+    else {
+        clearInterval(intervalID);
+        intervalID = null;
+        button.textContent = "Start";
+    }
+}
+
+button.addEventListener("click", startAndStop);
+button.addEventListener("keydown", e => {
+    if (e.key == 'p') startAndStop();
+});
