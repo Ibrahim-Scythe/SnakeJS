@@ -169,36 +169,6 @@ const gameLoop = () => {
     gameOver = snake.checkCollision();
 };
 
-document.addEventListener('keydown', function(event) {
-    event.preventDefault();
-    switch (event.key) {
-        case 'ArrowUp': 
-            if (vY != 1) {
-                nextvX = 0;
-                nextvY = -1;
-            }
-            break;
-        case 'ArrowDown':
-            if (vY != -1) { 
-                nextvX = 0;
-                nextvY = 1;
-            }
-            break;
-        case 'ArrowLeft': 
-            if (vX != 1) {
-                nextvX = -1;
-                nextvY = 0;
-            }
-            break;
-        case 'ArrowRight': 
-            if (vX != -1) {
-                nextvX = 1;
-                nextvY = 0;
-            }
-            break;
-    }
-});
-
 // Pressing the button or the key p will start/stop the race
 const button = document.getElementById("startBtn");
 let intervalID = null;
@@ -206,7 +176,7 @@ let intervalID = null;
 const startAndStop = () => {
     if (intervalID == null) {
         intervalID = setInterval(gameLoop, 100);
-        button.textContent = "Stop";
+        button.textContent = "Pause";
     }
     else {
         clearInterval(intervalID);
@@ -216,6 +186,44 @@ const startAndStop = () => {
 }
 
 button.addEventListener("click", startAndStop);
-button.addEventListener("keydown", e => {
-    if (e.key == 'p') startAndStop();
+
+document.addEventListener('keydown', function(event) {
+    event.preventDefault();
+    switch (event.key.toLowerCase()) {
+        case 'arrowup': 
+        case 'w':
+            if (vY != 1) {
+                nextvX = 0;
+                nextvY = -1;
+            }
+            break;
+
+        case 'arrowdown':
+        case 'd':
+            if (vY != -1) { 
+                nextvX = 0;
+                nextvY = 1;
+            }
+            break;
+
+        case 'arrowleft': 
+        case 'a':
+            if (vX != 1) {
+                nextvX = -1;
+                nextvY = 0;
+            }
+            break;
+
+        case 'arrowright': 
+        case 'd':
+            if (vX != -1) {
+                nextvX = 1;
+                nextvY = 0;
+            }
+            break;
+
+        case 'p':
+            startAndStop();
+            break;
+    }
 });
