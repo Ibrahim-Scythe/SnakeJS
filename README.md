@@ -1,5 +1,5 @@
 # SnakeJS
-A simple snake game written in HTML and CSS
+A simple snake game written in HTML, CSS and JS.
 
 ## How to run
 Download folder and open `index.html` in any web browser.
