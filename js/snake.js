@@ -5,27 +5,32 @@ const boardSize = canvas.height;
 const tileCount = 20;
 const tileSize = boardSize/tileCount;
 
-const randomNumber = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 class Snake {
-    constructor(x,y) {
-        this.positions = [];
-        this.positions.push([x,y]);
-        this.length = 1;
+    constructor() {
+        this.positions = [
+            [boardSize/4, boardSize/2],
+            [boardSize/4 + tileSize, boardSize/2]
+        ];
     }
 
     getPos(n) {
         return this.positions[n];
     }
 
-    getLength() {
-        return this.length;
+    getAllPos() {
+        return this.positions;
     }
 
-    move(x,y) {
-        const oldPos = this.getPos(this.positions.length-1);
+    getHeadPos() {
+        return this.positions[this.positions.length - 1];
+    }
+
+    getLength() {
+        return this.positions.length;
+    }
+
+    move(x,y, grow = false) {
+        const oldPos = this.getHeadPos();
 
         let newX = oldPos[0] + x;
         if (newX < 0) newX = boardSize-tileSize;
@@ -37,23 +42,52 @@ class Snake {
 
         this.positions.push([newX, newY]);
 
-        while (this.positions.length > this.length) {
-            this.positions.shift();
-        }
+        if (!grow) this.positions.shift();
     }
 
-    addPart() {
-        this.length++;
+    checkCollision() {
+        const headPos = this.getHeadPos()
+        for (let i = 0; i < this.positions.length - 1; i++) {
+            let partPos = this.positions[i];
+            if (headPos[0] === partPos[0] && headPos[1] === partPos[1]) {
+                console.log("Collided");
+                return true;
+            }
+
+        }
+        return false;
     }
+
+}
+
+// Initialising snake
+const snake = new Snake();
+
+// Returns a random number between min and max inclusive
+const randomNumber = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 class Pellet {
     constructor() {
-        this.pos = [tileSize*randomNumber(0, tileCount - 1), tileSize*randomNumber(0, tileCount - 1)];
+        // Spawns at a random position on right half of map
+        this.pos = [tileSize*randomNumber(tileCount/2, tileCount - 1), tileSize*randomNumber(0, tileCount - 1)];
     }
 
     move() {
         this.pos = [tileSize*randomNumber(0, tileCount - 1), tileSize*randomNumber(0, tileCount - 1)];
+
+        // Checks if pellet overlaps with snake body and rerolls if it does
+        const snakePositions = snake.getAllPos();
+
+        for (let i = 0; i < snake.getLength(); i++) {
+            let partPos = snakePositions[i];
+
+            if (partPos[0] === this.pos[0] && partPos[1] === this.pos[1]) {
+                this.move();
+                break;
+            }
+        }
     }
 
     getPos() {
@@ -61,59 +95,106 @@ class Pellet {
     }
 }
 
-let vX = 1;
+let vX = 0;
 let vY = 0;
 
-const snake = new Snake(boardSize/2, boardSize/2)
-snake.addPart();
-snake.move(tileSize, 0);
+let nextvX = 1;
+let nextvY = 0;
 
 const pellet = new Pellet();
 
+// Initial drawing
+ctx.fillStyle = "white";
+for (let i = 0; i < snake.getLength(); i++) {
+    let pos = snake.getPos(i);
+    ctx.fillRect(pos[0],pos[1], tileSize, tileSize);
+}
+
+ctx.fillStyle = "red";
+ctx.fillRect(pellet.pos[0], pellet.pos[1], tileSize, tileSize);
+
+let gameOver = false;
+
 const gameLoop = () => {
+    if (gameOver) {
+        ctx.font = '48px "Audiowide" ';
+        ctx.textAlign = 'center';
+
+        ctx.strokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.strokeText("Game Over", boardSize/2, boardSize/2);
+
+
+        ctx.fillStyle = "white";
+        ctx.fillText("Game Over", boardSize/2, boardSize/2);
+
+        return;
+    }
+    
+    // Collision Logic
+    vX = nextvX;
+    vY = nextvY;
+
+    const headPos = snake.getHeadPos();
+    const pelletPos = pellet.getPos();
+
+    const nextX = headPos[0] + tileSize * vX;
+    const nextY = headPos[1] + tileSize * vY;
+
+    const willEat =
+        nextX === pelletPos[0] &&
+        nextY === pelletPos[1];
+
+    snake.move(tileSize * vX, tileSize * vY, willEat);
+
+    if (willEat) {
+        pellet.move();
+    }
+
     // Clear canvas
     ctx.clearRect(0,0,canvas.width, canvas.height);
 
-    // Draw and move Snake
+    // Draw Snake
     ctx.fillStyle = "white";
 
-    snake.move(tileSize*vX, tileSize*vY);
-    
     for (let i = 0; i < snake.getLength(); i++) {
         let pos = snake.getPos(i);
         ctx.fillRect(pos[0],pos[1], tileSize, tileSize);
     }
 
-    // Draw pellet
-    const headPos = snake.getPos(snake.getLength()-1);
-    const pelletPos = pellet.getPos()
-    if (headPos[0] === pelletPos[0] && headPos[1] === pelletPos[1]) {
-        pellet.move();
-        snake.addPart();
-    }
-
+    // Draw Pellet
     ctx.fillStyle = "red";
     ctx.fillRect(pellet.pos[0], pellet.pos[1], tileSize, tileSize);
+
+    gameOver = snake.checkCollision();
 };
 
 document.addEventListener('keydown', function(event) {
     event.preventDefault();
     switch (event.key) {
         case 'ArrowUp': 
-            vX = 0;
-            vY = -1;
+            if (vY != 1) {
+                nextvX = 0;
+                nextvY = -1;
+            }
             break;
-        case 'ArrowDown': 
-            vX = 0;
-            vY = 1;
+        case 'ArrowDown':
+            if (vY != -1) { 
+                nextvX = 0;
+                nextvY = 1;
+            }
             break;
         case 'ArrowLeft': 
-            vX = -1;
-            vY = 0;
+            if (vX != 1) {
+                nextvX = -1;
+                nextvY = 0;
+            }
             break;
         case 'ArrowRight': 
-            vX = 1;
-            vY = 0;
+            if (vX != -1) {
+                nextvX = 1;
+                nextvY = 0;
+            }
             break;
     }
 });

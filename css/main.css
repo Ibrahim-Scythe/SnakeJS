@@ -16,6 +16,10 @@ canvas {
     border: 0.1em solid white;
 }
 
+section {
+    display: flex;
+}
+
 button {
     color: white;
     background-color: black;
@@ -24,4 +28,10 @@ button {
     font-family: inherit;
     font-size: x-large;
     border: 0.1em solid white;
+}
+
+a {
+    color: white;
+    font-style: normal;
+    text-decoration: none;
 }
