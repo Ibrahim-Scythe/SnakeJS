@@ -1,8 +1,6 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-ctx.fillStyle = "white";
-
 const boardSize = canvas.height;
 const tileCount = 20;
 const tileSize = boardSize/tileCount;
@@ -11,79 +9,62 @@ const randomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-class SnakeHead {
-    constructor(x, y) {
-        this.posX = x;
-        this.posY = y;
-        this.nextPart = null;
+class Snake {
+    constructor(x,y) {
+        this.positions = [];
+        this.positions.push([x,y]);
+        this.length = 1;
     }
 
-    getX() {
-        return this.posX;
+    getPos(n) {
+        return this.positions[n];
     }
 
-    getY() {
-        return this.posY;
+    getLength() {
+        return this.length;
     }
 
-    move(x, y) {
-        this.posX += x;
-        if (this.posX < 0) this.posX = boardSize - tileSize;
-        if (this.posX >= boardSize) this.posX = 0;
+    move(x,y) {
+        const oldPos = this.getPos(this.positions.length-1);
 
-        this.posY += y;
-        if (this.posY < 0) this.posY = boardSize - tileSize;
-        if (this.posY >= boardSize) this.posY = 0;
+        let newX = oldPos[0] + x;
+        if (newX < 0) newX = boardSize-tileSize;
+        if (newX >= boardSize) newX = 0;
+
+        let newY = oldPos[1] + y;
+        if (newY < 0) newY = boardSize-tileSize;
+        if (newY >= boardSize) newY = 0;
+
+        this.positions.push([newX, newY]);
+
+        while (this.positions.length > this.length) {
+            this.positions.shift();
+        }
     }
 
     addPart() {
-        if (this.nextPart === null) {
-            this.nextPart = new SnakePart(this.getX(), this.getY(), this)
-        }
-        else this.nextPart.addPart();
-    }
-}
-
-class SnakePart extends SnakeHead {
-    constructor(x, y, prevPart) {
-        super(x, y);
-        this.prevPart = prevPart;
-        this.nextX = this.prevPart.getX();
-        this.nextY = this.prevPart.getY();
-    }
-
-    updatePos() {
-        this.posX = this.nextX;
-        this.posY = this.nextY;
-        this.nextX = this.prevPart.getX();
-        this.nextY = this.prevPart.getY();
+        this.length++;
     }
 }
 
 class Pellet {
     constructor() {
-        this.posX = tileSize*randomNumber(0, tileCount - 1);
-        this.posY = tileSize*randomNumber(0, tileCount - 1);
+        this.pos = [tileSize*randomNumber(0, tileCount - 1), tileSize*randomNumber(0, tileCount - 1)];
     }
 
     move() {
-        this.posX = tileSize*randomNumber(0, tileCount - 1);
-        this.posY = tileSize*randomNumber(0, tileCount - 1);
+        this.pos = [tileSize*randomNumber(0, tileCount - 1), tileSize*randomNumber(0, tileCount - 1)];
     }
 
-    getX() {
-        return this.posX;
-    }
-
-    getY() {
-        return this.posY;
+    getPos() {
+        return this.pos;
     }
 }
 
 let vX = 1;
 let vY = 0;
 
-const snake = new SnakeHead(boardSize/2, boardSize/2)
+const snake = new Snake(boardSize/2, boardSize/2)
 snake.addPart();
 snake.move(tileSize, 0);
 
@@ -97,23 +78,22 @@ const gameLoop = () => {
     ctx.fillStyle = "white";
 
     snake.move(tileSize*vX, tileSize*vY);
-    ctx.fillRect(snake.getX(), snake.getY(), tileSize, tileSize);
-
-    let part = snake.nextPart;
-    while (part != null) {
-        part.updatePos();
-        ctx.fillRect(part.getX(), part.getY(), tileSize, tileSize);
-        part = part.nextPart;
+    
+    for (let i = 0; i < snake.getLength(); i++) {
+        let pos = snake.getPos(i);
+        ctx.fillRect(pos[0],pos[1], tileSize, tileSize);
     }
 
     // Draw pellet
-    if (snake.getX() === pellet.getX() && snake.getY() === pellet.getY()) {
+    const headPos = snake.getPos(snake.getLength()-1);
+    const pelletPos = pellet.getPos()
+    if (headPos[0] === pelletPos[0] && headPos[1] === pelletPos[1]) {
         pellet.move();
         snake.addPart();
     }
 
     ctx.fillStyle = "red";
-    ctx.fillRect(pellet.posX, pellet.posY, tileSize, tileSize);
+    ctx.fillRect(pellet.pos[0], pellet.pos[1], tileSize, tileSize);
 };
 
 document.addEventListener('keydown', function(event) {
