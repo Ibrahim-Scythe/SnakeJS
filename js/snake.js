@@ -199,7 +199,7 @@ document.addEventListener('keydown', function(event) {
             break;
 
         case 'arrowdown':
-        case 'd':
+        case 's':
             if (vY != -1) { 
                 nextvX = 0;
                 nextvY = 1;
