@@ -5,11 +5,14 @@ const boardSize = canvas.height;
 const tileCount = 20;
 const tileSize = boardSize/tileCount;
 
+const pointsDisplay = document.getElementById("points");
+let points = 0;
+
 class Snake {
     constructor() {
         this.positions = [
-            [boardSize/4, boardSize/2],
-            [boardSize/4 + tileSize, boardSize/2]
+            [boardSize/4, boardSize/2 + tileSize],
+            [boardSize/4 + tileSize, boardSize/2 + tileSize]
         ];
     }
 
@@ -113,6 +116,18 @@ for (let i = 0; i < snake.getLength(); i++) {
 ctx.fillStyle = "red";
 ctx.fillRect(pellet.pos[0], pellet.pos[1], tileSize, tileSize);
 
+ctx.font = '32px "Audiowide" ';
+ctx.textAlign = 'center';
+
+ctx.strokeStyle = 'black';
+ctx.lineWidth = 3;
+ctx.strokeText("Press Space to start", boardSize/2, boardSize/2);
+
+
+ctx.fillStyle = "white";
+ctx.fillText("Press Space to start", boardSize/2, boardSize/2);
+
+
 let gameOver = false;
 
 const gameLoop = () => {
@@ -149,6 +164,8 @@ const gameLoop = () => {
 
     if (willEat) {
         pellet.move();
+        points++;
+        pointsDisplay.textContent = points;
     }
 
     // Clear canvas
@@ -181,7 +198,7 @@ const startAndStop = () => {
     else {
         clearInterval(intervalID);
         intervalID = null;
-        button.textContent = "Start";
+        button.textContent = "Resume";
     }
 }
 
@@ -222,6 +239,7 @@ document.addEventListener('keydown', function(event) {
             }
             break;
 
+        case ' ':
         case 'p':
             startAndStop();
             break;
