@@ -1,3 +1,5 @@
+const isMobile = window.innerWidth <= 768;
+
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
@@ -106,27 +108,37 @@ let nextvY = 0;
 
 const pellet = new Pellet();
 
-// Initial drawing
-ctx.fillStyle = "white";
-for (let i = 0; i < snake.getLength(); i++) {
-    let pos = snake.getPos(i);
-    ctx.fillRect(pos[0],pos[1], tileSize, tileSize);
+// Loads font and draws start screen
+async function initialScreen() {
+    await document.fonts.ready;
+
+    ctx.fillStyle = "white";
+    for (let i = 0; i < snake.getLength(); i++) {
+        let pos = snake.getPos(i);
+        ctx.fillRect(pos[0],pos[1], tileSize, tileSize);
+    }
+
+    ctx.fillStyle = "red";
+    ctx.fillRect(pellet.pos[0], pellet.pos[1], tileSize, tileSize);
+
+    ctx.font = '48px "Audiowide" ';
+    ctx.textAlign = 'center';
+
+    let startText = "Press Space to start"
+    if (isMobile) {
+        startText = "Double tap to start";
+    }
+
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 3;
+    ctx.strokeText(startText, boardSize/2, boardSize/2);
+
+
+    ctx.fillStyle = "white";
+    ctx.fillText(startText, boardSize/2, boardSize/2);
 }
 
-ctx.fillStyle = "red";
-ctx.fillRect(pellet.pos[0], pellet.pos[1], tileSize, tileSize);
-
-ctx.font = '32px "Audiowide" ';
-ctx.textAlign = 'center';
-
-ctx.strokeStyle = 'black';
-ctx.lineWidth = 3;
-ctx.strokeText("Press Space to start", boardSize/2, boardSize/2);
-
-
-ctx.fillStyle = "white";
-ctx.fillText("Press Space to start", boardSize/2, boardSize/2);
-
+initialScreen();
 
 let gameOver = false;
 
@@ -186,30 +198,26 @@ const gameLoop = () => {
     gameOver = snake.checkCollision();
 };
 
-// Pressing the button or the key p will start/stop the race
-const button = document.getElementById("startBtn");
+// Pressing the Space key will start/stop the race
 let intervalID = null;
 
 const startAndStop = () => {
-    if (intervalID == null) {
+    if (intervalID === null) {
         intervalID = setInterval(gameLoop, 100);
-        button.textContent = "Pause";
     }
     else {
         clearInterval(intervalID);
         intervalID = null;
-        button.textContent = "Resume";
     }
 }
 
-button.addEventListener("click", startAndStop);
-
+// Keyboard Controls
 document.addEventListener('keydown', function(event) {
     event.preventDefault();
     switch (event.key.toLowerCase()) {
         case 'arrowup': 
         case 'w':
-            if (vY != 1) {
+            if (vY !== 1) {
                 nextvX = 0;
                 nextvY = -1;
             }
@@ -217,7 +225,7 @@ document.addEventListener('keydown', function(event) {
 
         case 'arrowdown':
         case 's':
-            if (vY != -1) { 
+            if (vY !== -1) { 
                 nextvX = 0;
                 nextvY = 1;
             }
@@ -225,7 +233,7 @@ document.addEventListener('keydown', function(event) {
 
         case 'arrowleft': 
         case 'a':
-            if (vX != 1) {
+            if (vX !== 1) {
                 nextvX = -1;
                 nextvY = 0;
             }
@@ -233,7 +241,7 @@ document.addEventListener('keydown', function(event) {
 
         case 'arrowright': 
         case 'd':
-            if (vX != -1) {
+            if (vX !== -1) {
                 nextvX = 1;
                 nextvY = 0;
             }
@@ -242,6 +250,10 @@ document.addEventListener('keydown', function(event) {
         case ' ':
         case 'p':
             startAndStop();
+            break;
+
+        case 'r':
+            window.location.href = "index.html";
             break;
     }
 });

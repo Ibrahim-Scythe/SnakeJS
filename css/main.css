@@ -6,31 +6,39 @@ body {
     font-family: "Audiowide", sans-serif;
     font-weight: 400;
     font-style: normal;
+    touch-action: manipulation;
 }
 
 header h1 {
     color: white;
     font-weight: bold;
+    margin: 0.2em 0em;
 }
 
 h2 {
     color: white;
     font-weight: 400;
+    margin: 0.5em;
 }
 
 canvas {
     border: 0.1em solid white;
+    width: min(95vw, 600px);
+    height: auto;
+    aspect-ratio: 1/1;
 }
 
 section {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: min(95vw, 600px);
 }
 
 button {
     color: white;
     background-color: black;
-    margin: 1em;
+    margin: 0.5em;
 
     font-family: inherit;
     font-size: x-large;
@@ -41,4 +49,8 @@ a {
     color: white;
     font-style: normal;
     text-decoration: none;
+}
+
+.mobile-controls {
+    display: none;
 }

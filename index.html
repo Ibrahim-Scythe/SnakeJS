@@ -7,7 +7,10 @@
     <title>Snake</title>
 
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/mobile.css">
+
     <script src="js/snake.js" defer></script>
+    <script src="js/mobile-controls.js" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,13 +25,17 @@
     <canvas id="game" width="600" height="600"></canvas>
 
     <section>
-        <button id="startBtn">Start</button>
-
         <button><a href="index.html">Restart</a></button>
-
         <h2>Points: <span id="points">0</span></h2>
-
     </section>
+
+    <aside class="mobile-controls">
+        <button id="upBtn"><span>⮝</span></button>
+        <button id="leftBtn"><span>⮜</span></button>
+        <button id="rightBtn"><span>⮞</span></button>        
+        <button id="downBtn"><span>⮟</span></button>
+    </aside>
+
 </body>
 
 </html>

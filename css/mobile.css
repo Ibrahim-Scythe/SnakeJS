@@ -1,0 +1,43 @@
+@media (max-width:768px) {
+    .mobile-controls {
+    display: grid;
+    grid-template-areas: 
+        '. up .'
+        'left . right'
+        '. down .';
+    }
+
+    #upBtn { grid-area: up; }
+    #downBtn { grid-area: down; }
+    #leftBtn { grid-area: left; }
+    #rightBtn { grid-area: right; }
+
+    /* button hitbox */
+    .mobile-controls button {
+        height: clamp(100px, 20vw, 160px);
+        width: clamp(100px, 20vw, 160px);
+
+        font-size: clamp(1.5em, 5vw, 3em);
+
+        margin: 0;
+        padding: 0;
+        border: none;
+
+        justify-items: center;
+        align-items: center;
+    }
+
+    /* visible circle */
+    .mobile-controls span {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: clamp(80px, 16vw, 120px);
+        width: clamp(80px, 16vw, 120px);
+
+        border: 0.1em solid white;
+        border-radius: 50%;
+    }
+
+}
