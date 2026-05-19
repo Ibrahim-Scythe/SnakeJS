@@ -18,6 +18,7 @@
         width: clamp(100px, 20vw, 160px);
 
         font-size: clamp(1.5em, 5vw, 3em);
+        font-family: "Noto Sans Symbols 2", sans-serif;
 
         margin: 0;
         padding: 0;
