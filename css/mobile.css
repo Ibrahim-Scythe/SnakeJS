@@ -1,0 +1,25 @@
+@media (max-width:768px) {
+    .mobile-controls {
+    display: grid;
+    grid-template-areas: 
+        '. up .'
+        'left . right'
+        '. down .';
+    }
+
+    #upBtn { grid-area: up; }
+    #downBtn { grid-area: down; }
+    #leftBtn { grid-area: left; }
+    #rightBtn { grid-area: right; }
+
+    .mobile-controls button {
+        height: clamp(60px, 14vw, 120px);
+        width: clamp(60px, 14vw, 120px);
+
+        font-size: clamp(1.5em, 5vw, 3em);
+
+        margin: 0.2em;
+        padding: 0.2em;
+        border-radius: 50%;
+    }
+}
