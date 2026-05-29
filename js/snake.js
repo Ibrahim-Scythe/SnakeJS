@@ -103,7 +103,7 @@ class Pellet {
 let vX = 0;
 let vY = 0;
 
-let nextvX = 1;
+let nextvX = tileSize;
 let nextvY = 0;
 
 const pellet = new Pellet();
@@ -165,14 +165,19 @@ const gameLoop = () => {
     const headPos = snake.getHeadPos();
     const pelletPos = pellet.getPos();
 
-    const nextX = headPos[0] + tileSize * vX;
-    const nextY = headPos[1] + tileSize * vY;
+    let nextX = headPos[0] + vX;
+    if (nextX < 0) nextX = boardSize-tileSize;
+    if (nextX >= boardSize) nextX = 0;
+
+    let nextY = headPos[1] + vY;
+    if (nextY < 0) nextY = boardSize-tileSize;
+    if (nextY >= boardSize) nextY = 0;
 
     const willEat =
         nextX === pelletPos[0] &&
         nextY === pelletPos[1];
 
-    snake.move(tileSize * vX, tileSize * vY, willEat);
+    snake.move(vX, vY, willEat);
 
     if (willEat) {
         pellet.move();
@@ -217,32 +222,32 @@ document.addEventListener('keydown', function(event) {
     switch (event.key.toLowerCase()) {
         case 'arrowup': 
         case 'w':
-            if (vY !== 1) {
+            if (vY !== tileSize) {
                 nextvX = 0;
-                nextvY = -1;
+                nextvY = -1*tileSize;
             }
             break;
 
         case 'arrowdown':
         case 's':
-            if (vY !== -1) { 
+            if (vY !== -1*tileSize) { 
                 nextvX = 0;
-                nextvY = 1;
+                nextvY = tileSize;
             }
             break;
 
         case 'arrowleft': 
         case 'a':
-            if (vX !== 1) {
-                nextvX = -1;
+            if (vX !== tileSize) {
+                nextvX = -1*tileSize;
                 nextvY = 0;
             }
             break;
 
         case 'arrowright': 
         case 'd':
-            if (vX !== -1) {
-                nextvX = 1;
+            if (vX !== -1*tileSize) {
+                nextvX = tileSize;
                 nextvY = 0;
             }
             break;

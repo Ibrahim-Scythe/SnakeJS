@@ -54,7 +54,7 @@
         height: min(14.4vw, 126px);
         width: min(14.4vw, 126px);
 
-        border: 0.5vw solid white;
+        border: min(0.5vw,0.2em) solid white;
         border-radius: 50%;
     }
 

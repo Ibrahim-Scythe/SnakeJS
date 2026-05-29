@@ -23,7 +23,7 @@ h2 {
 }
 
 canvas {
-    border: 0.5vw solid white;
+    border: min(0.5vw,0.2em) solid white;
     width: min(80vw, 500px);
     height: auto;
     aspect-ratio: 1/1;
@@ -44,7 +44,7 @@ button {
 
     font-family: inherit;
     font-size: min(5vw, 2em);
-    border: 0.5vw solid white;
+    border: min(0.2vw,0.1em) solid white;
 }
 
 a {
