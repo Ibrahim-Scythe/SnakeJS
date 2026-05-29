@@ -1,7 +1,7 @@
 @media (max-width:768px) {
     .mobile-controls {
     display: grid;
-    gap: 3vw;
+    gap: 2vw;
     grid-template-areas: 
         '. up .'
         'left . right'
@@ -30,8 +30,8 @@
         justify-content: center;
         align-items: center;
 
-        height: min(16vw, 140px);
-        width: min(16vw, 140px);
+        height: min(18vw, 15em);
+        width: min(18vw, 15em);
 
         font-size: 3vw;
         font-family: "Noto Sans Symbols 2", sans-serif;

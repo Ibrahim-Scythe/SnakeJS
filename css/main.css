@@ -1,8 +1,13 @@
 body {
-    background-color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    margin: 0;
+
+    background-color: black;
+    color: white;
+
     font-family: "Audiowide", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -34,7 +39,9 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
     width: min(80vw, 500px);
+    margin: 3vw;
 }
 
 button {
@@ -51,6 +58,103 @@ a {
     color: white;
     font-style: normal;
     text-decoration: none;
+}
+
+.helpBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: fixed;
+    top: 0.5vw;
+    right: 0.5vw;
+
+    width: min(8vw, 3rem);
+    height: min(8vw, 3rem);
+
+    border: min(0.8vw, 0.2rem) solid white;
+    border-radius: 50%;
+}
+
+.helpBtn img {
+    width: 60%;
+    height: 60%;
+}
+
+.help {
+    display: none;
+    background-color: black;
+    border: min(1vw,0.4em) double white;
+    border-radius: 2vw;
+
+    position: fixed;
+    width: clamp(16em, 60vw, 36em);
+    margin: 1em;
+    z-index: 100;
+
+    animation-name: fade-in;
+    animation-duration: 2000ms;
+    animation-fill-mode: forwards;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0%;
+    }
+    to {
+        opacity: 100%;
+    }
+}
+
+.help h1, .help h2, .help h3 {
+    font-size: min(5vw, 2em);
+    font-style: normal;
+    font-weight: 400;
+
+    margin: 1.5vw 1vw;
+}
+
+.help p {
+    font-size: min(2.4vw, 1em);
+    font-style: normal;
+    font-weight: 400;
+
+    margin: 1.2vw 1vw;
+}
+
+p.author {
+    margin-top: 0;
+    margin-bottom: 1.5vw;
+    color: lightgray;
+}
+
+.help img {
+    width: min(8vw, 5rem);
+    height: min(8vw, 5rem);
+
+    margin: 2vw;
+}
+
+.help hr {
+    width: 90%;
+    height: 0.2vw;
+
+    background-color: white;
+}
+
+.help button {
+    position: absolute;
+    top: 0.5vw;
+    right: 0.5vw;
+
+    border: none;
+    background: none;
+}
+
+.help button img {
+    width: min(5vw, 2rem);
+    height: min(5vw, 2rem);
+    margin: 1vw;
 }
 
 .mobile-controls {

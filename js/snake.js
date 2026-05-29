@@ -216,6 +216,18 @@ const startAndStop = () => {
     }
 }
 
+// Display help Section
+const helpSection = document.getElementById("helpSection");
+const toggleHelpSection = () => {
+    if (helpSection.style.display === '') helpSection.style.display = "block";
+    else if (helpSection.style.display === "block") helpSection.style.display = '';
+}
+const helpBtn = document.getElementById("helpBtn");
+helpBtn.addEventListener("click", toggleHelpSection);
+
+const xBtn = document.getElementById("xBtn");
+xBtn.addEventListener("click", toggleHelpSection);
+
 // Keyboard Controls
 document.addEventListener('keydown', function(event) {
     event.preventDefault();
