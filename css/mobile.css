@@ -1,31 +1,45 @@
 @media (max-width:768px) {
     .mobile-controls {
     display: grid;
+    gap: 0.8em;
     grid-template-areas: 
         '. up .'
         'left . right'
         '. down .';
     }
 
-    #upBtn { grid-area: up; }
-    #downBtn { grid-area: down; }
-    #leftBtn { grid-area: left; }
-    #rightBtn { grid-area: right; }
+    #upBtn {
+        grid-area: up; 
+    }
+    #downBtn {
+        grid-area: down;
+        transform: rotate(180deg);
+    }
+    #leftBtn {
+        grid-area: left;
+        transform: rotate(-90deg);
+    }
+    #rightBtn {
+        grid-area: right;
+        transform: rotate(90deg);
+    }
 
     /* button hitbox */
     .mobile-controls button {
-        height: clamp(100px, 20vw, 160px);
-        width: clamp(100px, 20vw, 160px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
-        font-size: clamp(1.5em, 5vw, 3em);
+        height: clamp(60px, 16vw, 140px);
+        width: clamp(60px, 16vw, 140px);
+
+        font-size: 3vw;
         font-family: "Noto Sans Symbols 2", sans-serif;
 
         margin: 0;
         padding: 0;
-        border: none;
-
-        justify-items: center;
-        align-items: center;
+        touch-action: manipulation;
+        /* border: none; */
     }
 
     /* visible circle */
@@ -34,10 +48,19 @@
         justify-content: center;
         align-items: center;
 
-        height: clamp(80px, 16vw, 120px);
-        width: clamp(80px, 16vw, 120px);
+        transform: translateY(-2px);
+        line-height: 1;
+
+        height: clamp(54px, 14.4vw, 126px);
+        width: clamp(54px, 14.4vw, 126px);
 
         border: 0.1em solid white;
         border-radius: 50%;
+    }
+
+    /* svg arrow */
+    .mobile-controls img {
+        width: 25%;
+        height: 25%;
     }
 }
