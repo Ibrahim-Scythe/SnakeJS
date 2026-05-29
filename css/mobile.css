@@ -1,7 +1,7 @@
 @media (max-width:768px) {
     .mobile-controls {
     display: grid;
-    gap: 0.8em;
+    gap: 3vw;
     grid-template-areas: 
         '. up .'
         'left . right'
@@ -30,8 +30,8 @@
         justify-content: center;
         align-items: center;
 
-        height: clamp(60px, 16vw, 140px);
-        width: clamp(60px, 16vw, 140px);
+        height: min(16vw, 140px);
+        width: min(16vw, 140px);
 
         font-size: 3vw;
         font-family: "Noto Sans Symbols 2", sans-serif;
@@ -39,7 +39,7 @@
         margin: 0;
         padding: 0;
         touch-action: manipulation;
-        /* border: none; */
+        border: none;
     }
 
     /* visible circle */
@@ -51,10 +51,10 @@
         transform: translateY(-2px);
         line-height: 1;
 
-        height: clamp(54px, 14.4vw, 126px);
-        width: clamp(54px, 14.4vw, 126px);
+        height: min(14.4vw, 126px);
+        width: min(14.4vw, 126px);
 
-        border: 0.1em solid white;
+        border: 0.5vw solid white;
         border-radius: 50%;
     }
 
