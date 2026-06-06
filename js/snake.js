@@ -26,6 +26,9 @@ const boardSize = canvas.height;
 const tileCount = 20;
 const tileSize = boardSize/tileCount;
 
+// SFX components
+const pickupSound = new Audio('sfx/pickup.wav');
+const gameOverSound = new Audio('sfx/gameover.wav');
 
 // Points Counter Components
 const pointsDisplay = document.getElementById("points");
@@ -195,6 +198,8 @@ let gameOver = false;
 const gameLoop = () => {
     if (gameOver) {
         drawText("Game Over");
+        gameOverSound.play();
+        startAndStop();
         return;
     }
     
@@ -223,6 +228,7 @@ const gameLoop = () => {
         pellet.move();
         points++;
         pointsDisplay.textContent = points;
+        pickupSound.play();
     }
 
     // Clear canvas and redraw
